@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 class HomeViewModel(
     private val repository: NotesRepository,
 ) : ViewModel() {
+
     val uiState: StateFlow<HomeNotesState> =
         repository.notes.map {
             HomeNotesState.Success(it)
