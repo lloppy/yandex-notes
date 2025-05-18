@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.yandexnotes.R
-import com.example.yandexnotes.ui.navigation.NotesNavigation
+import com.example.yandexnotes.navigation.NotesNavigation
 import com.example.yandexnotes.ui.screens.home.HomeDestination
 
 @Composable

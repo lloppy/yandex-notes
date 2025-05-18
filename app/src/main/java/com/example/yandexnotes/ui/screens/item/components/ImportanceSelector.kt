@@ -9,22 +9,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.yandexnotes.model.Importance
+import com.example.model.Importance.entries
 import com.example.yandexnotes.ui.screens.item.NoteEntity
 
 @Composable
 fun ImportanceSelector(
     noteEntity: NoteEntity,
-    onValueChange: (NoteEntity) -> Unit
+    onValueChange: (NoteEntity) -> Unit,
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(vertical = 8.dp)
     ) {
-        items(Importance.entries) { level ->
+        items(entries) { level ->
             FilterChip(
                 selected = noteEntity.importance == level,
-                onClick = { onValueChange(noteEntity.copy(importance = level)) },
+                onClick = {
+                    onValueChange(
+                        noteEntity.copy(importance = level)
+                    )
+                },
                 label = { Text(text = level.rusName) }
             )
         }

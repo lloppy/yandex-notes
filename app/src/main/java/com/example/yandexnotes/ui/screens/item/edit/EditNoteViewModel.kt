@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.yandexnotes.data.NotesRepository
+import com.example.domain.NotesRepository
 import com.example.yandexnotes.ui.screens.item.NoteEntity
-import com.example.yandexnotes.ui.screens.item.create.NoteEntryState
+import com.example.yandexnotes.ui.screens.item.NoteEntryState
 import com.example.yandexnotes.ui.screens.item.toNote
 import com.example.yandexnotes.ui.screens.item.toUiState
 import kotlinx.coroutines.flow.filterNotNull

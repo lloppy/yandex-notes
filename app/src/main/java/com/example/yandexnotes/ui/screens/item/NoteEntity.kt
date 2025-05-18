@@ -2,8 +2,8 @@ package com.example.yandexnotes.ui.screens.item
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.yandexnotes.model.Importance
-import com.example.yandexnotes.model.Note
+import com.example.model.Importance
+import com.example.model.Note
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID

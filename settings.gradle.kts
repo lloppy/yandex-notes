@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "YandexNotes"
 include(":app")
- 
+include(":core:data")
+include(":core:domain")
+include(":core:model")

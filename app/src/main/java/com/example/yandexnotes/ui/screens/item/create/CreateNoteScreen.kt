@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.yandexnotes.AppViewModelProvider
 import com.example.yandexnotes.R
 import com.example.yandexnotes.ui.NotesAppBar
-import com.example.yandexnotes.ui.navigation.NavigationDestination
+import com.example.yandexnotes.navigation.NavigationDestination
 import com.example.yandexnotes.ui.screens.item.components.NotesInputForm
 
 object CreateNoteDestination : NavigationDestination {

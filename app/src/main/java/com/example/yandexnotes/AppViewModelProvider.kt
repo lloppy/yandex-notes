@@ -1,14 +1,12 @@
 package com.example.yandexnotes
 
-import android.app.Application
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.yandexnotes.data.FileNotebook
-import com.example.yandexnotes.data.NotesRepository
+import com.example.data.cache.FileNotebook
+import com.example.domain.NotesRepository
 import com.example.yandexnotes.ui.screens.home.HomeViewModel
 import com.example.yandexnotes.ui.screens.item.create.CreateNoteViewModel
 import com.example.yandexnotes.ui.screens.item.edit.EditNoteViewModel

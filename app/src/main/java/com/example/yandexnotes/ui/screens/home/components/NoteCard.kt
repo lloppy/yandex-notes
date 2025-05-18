@@ -28,7 +28,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.yandexnotes.R
-import com.example.yandexnotes.model.Note
+import com.example.model.Note
 
 @Composable
 fun NoteCard(

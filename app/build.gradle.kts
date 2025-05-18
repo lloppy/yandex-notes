@@ -40,6 +40,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -63,8 +66,5 @@ dependencies {
     // navigation
     implementation(libs.androidx.navigation.compose)
 
-    // logback-android
-    implementation("com.github.tony19:logback-android:3.0.0")
-    implementation ("org.slf4j:slf4j-api:2.0.17")
 
 }

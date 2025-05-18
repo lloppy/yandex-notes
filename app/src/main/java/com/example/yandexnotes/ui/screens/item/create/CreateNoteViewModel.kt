@@ -5,8 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.yandexnotes.data.NotesRepository
+import com.example.domain.NotesRepository
 import com.example.yandexnotes.ui.screens.item.NoteEntity
+import com.example.yandexnotes.ui.screens.item.NoteEntryState
 import com.example.yandexnotes.ui.screens.item.toNote
 
 class CreateNoteViewModel(

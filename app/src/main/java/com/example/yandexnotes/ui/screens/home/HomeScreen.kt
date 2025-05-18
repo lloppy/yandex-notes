@@ -37,9 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.yandexnotes.AppViewModelProvider
 import com.example.yandexnotes.R
-import com.example.yandexnotes.model.Note
 import com.example.yandexnotes.ui.NotesAppBar
-import com.example.yandexnotes.ui.navigation.NavigationDestination
+import com.example.yandexnotes.navigation.NavigationDestination
 import com.example.yandexnotes.ui.screens.home.components.NoteCard
 import com.example.yandexnotes.ui.screens.home.components.SwipeableWrapper
 import kotlinx.coroutines.launch
@@ -125,7 +124,7 @@ fun HomeScreen(
 
 @Composable
 fun HabitContent(
-    notes: List<Note>,
+    notes: List<com.example.model.Note>,
     onClickNote: (String) -> Unit,
     onSwipeDelete: (String) -> Unit,
     onSwipeEdit: (String) -> Unit,
