@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="padding_small">4.dp</dimen>
+    <dimen name="padding_medium">14.dp</dimen>
+    <dimen name="padding_large">24.dp</dimen>
+
+    <dimen name="loading_circle">70.dp</dimen>
+    <dimen name="color_circle">24.dp</dimen>
+    <dimen name="emoji_size">32.sp</dimen>
+
+    <dimen name="section_padding">8.dp</dimen>
+    <dimen name="min_habit_card_width">350.dp</dimen>
+    <dimen name="line_height">18.sp</dimen>
+    <dimen name="button_size">50.dp</dimen>
+    <dimen name="corner_round">18.dp</dimen>
+</resources>

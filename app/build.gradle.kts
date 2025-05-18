@@ -56,4 +56,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // view model
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // logback-android
+    implementation("com.github.tony19:logback-android:3.0.0")
+    implementation ("org.slf4j:slf4j-api:2.0.17")
+
 }

@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">YandexNotes</string>
+
+    <string name="back_button">back</string>
+    <string name="menu_button">menu</string>
+    <string name="save">Сохранить</string>
+
+    <string name="item_entry_title">add item</string>
+    <string name="no_items">Заметки еще не созданы</string>
+
+    <string name="item_edit_title">Редактировать</string>
+    <string name="create_note">Создать новую заметку</string>
+    <string name="set_content">Текст заметки\n</string>
+    <string name="set_name">Название заметки</string>
+    <string name="create">Создать заметку</string>
+
 </resources>
