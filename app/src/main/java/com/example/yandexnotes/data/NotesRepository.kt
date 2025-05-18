@@ -1,5 +1,6 @@
 package com.example.yandexnotes.data
 
+import android.content.Context
 import com.example.yandexnotes.model.Note
 import kotlinx.coroutines.flow.Flow
 
@@ -9,6 +10,6 @@ interface NotesRepository {
     fun getNoteByUid(uid: String): Flow<Note>
     fun updateNote(note: Note)
     fun deleteNote(uid: String)
-    fun saveToFile()
-    fun loadFromFile()
+    fun saveToFile(context: Context)
+    fun loadFromFile(context: Context)
 }

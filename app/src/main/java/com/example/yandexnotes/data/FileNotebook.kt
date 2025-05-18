@@ -10,10 +10,9 @@ import org.json.JSONArray
 import org.slf4j.LoggerFactory
 import java.io.File
 
-class FileNotebook(private val context: Context) : NotesRepository {
+class FileNotebook : NotesRepository {
 
     private val logger = LoggerFactory.getLogger(FileNotebook::class.java)
-    private val file = File(context.filesDir, "notes.json")
 
     private val _notes = MutableStateFlow<List<Note>>(emptyList())
     override val notes: Flow<List<Note>> get() = _notes
@@ -21,6 +20,7 @@ class FileNotebook(private val context: Context) : NotesRepository {
     override fun addNote(note: Note) {
         _notes.value += note
         logger.debug("Добавлена заметка: ${note.title}")
+        logger.debug("Новый размер массива заметок: ${_notes.value.size}")
     }
 
     override fun getNoteByUid(uid: String): Flow<Note> =
@@ -44,14 +44,16 @@ class FileNotebook(private val context: Context) : NotesRepository {
         logger.debug("Удаление заметки UID=$uid, удалено")
     }
 
-    override fun saveToFile() {
+    override fun saveToFile(context: Context) {
+        val file = File(context.filesDir, "notes.json")
         val jsonArray = JSONArray()
         _notes.value.forEach { jsonArray.put(it.json) }
         file.writeText(jsonArray.toString())
         logger.debug("Сохранено ${_notes.value.size} заметок в файл")
     }
 
-    override fun loadFromFile() {
+    override fun loadFromFile(context: Context) {
+        val file = File(context.filesDir, "notes.json")
         if (!file.exists()) {
             logger.debug("Файл не найден, загрузка пропущена")
             return
@@ -62,9 +64,7 @@ class FileNotebook(private val context: Context) : NotesRepository {
         val loadedNotes = mutableListOf<Note>()
         for (i in 0 until array.length()) {
             val jsonNote = array.getJSONObject(i)
-            Note.parse(jsonNote)?.let {
-                loadedNotes.add(it)
-            }
+            Note.parse(jsonNote)?.let { loadedNotes.add(it) }
         }
         _notes.value = loadedNotes
         logger.debug("Загружено ${loadedNotes.size} заметок из файла")

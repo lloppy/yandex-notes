@@ -1,6 +1,5 @@
 package com.example.yandexnotes.ui.screens.home
 
-import androidx.compose.foundation.MarqueeDefaults.Spacing
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,12 +23,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -40,6 +41,7 @@ import com.example.yandexnotes.model.Note
 import com.example.yandexnotes.ui.NotesAppBar
 import com.example.yandexnotes.ui.navigation.NavigationDestination
 import com.example.yandexnotes.ui.screens.home.components.NoteCard
+import com.example.yandexnotes.ui.screens.home.components.SwipeableWrapper
 import kotlinx.coroutines.launch
 
 object HomeDestination : NavigationDestination {
@@ -52,15 +54,19 @@ object HomeDestination : NavigationDestination {
 fun HomeScreen(
     onClickAddItem: () -> Unit,
     onClickEdit: (String) -> Unit,
-    onClickNote: (String) -> Unit,
     onClickOpenDrawer: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadFromFile(context = context)
+    }
 
     Scaffold(
         topBar = {
@@ -96,7 +102,17 @@ fun HomeScreen(
                     notes = state.notes,
                     onClickNote = {
                         coroutineScope.launch {
-                            onClickNote.invoke(it)
+                            onClickEdit.invoke(it)
+                        }
+                    },
+                    onSwipeDelete = {
+                        coroutineScope.launch {
+                            viewModel.deleteNoteById(it)
+                        }
+                    },
+                    onSwipeEdit = {
+                        coroutineScope.launch {
+                            onClickEdit.invoke(it)
                         }
                     },
                     modifier = modifier,
@@ -111,6 +127,8 @@ fun HomeScreen(
 fun HabitContent(
     notes: List<Note>,
     onClickNote: (String) -> Unit,
+    onSwipeDelete: (String) -> Unit,
+    onSwipeEdit: (String) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues,
 ) {
@@ -124,19 +142,36 @@ fun HabitContent(
     } else {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(dimensionResource(R.dimen.min_habit_card_width)),
-            modifier = modifier
-                .fillMaxSize()
-                .padding(contentPadding),
+            modifier = modifier.fillMaxSize(),
+            contentPadding = contentPadding,
             verticalArrangement = Arrangement.Top
         ) {
             items(items = notes, key = { it.uid }) { note ->
-                NoteCard(
-                    note = note,
+                SwipeableWrapper(
+                    onSwipeDelete = {
+                        onSwipeDelete(note.uid)
+                    },
+                    onSwipeEdit = {
+                        onSwipeEdit(note.uid)
+                    },
+                    content = {
+                        NoteCard(
+                            note = note,
+                            onClickDelete = {
+                                onSwipeDelete(note.uid)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(4f)
+                                .clickable(onClick = { onClickNote(note.uid) })
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(dimensionResource(R.dimen.padding_small))
-                        .aspectRatio(4f)
-                        .clickable(onClick = { onClickNote(note.uid) })
+                        .padding(
+                            vertical = dimensionResource(R.dimen.padding_small),
+                            horizontal = dimensionResource(R.dimen.padding_medium)
+                        )
                 )
             }
         }

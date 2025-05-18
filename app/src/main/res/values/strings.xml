@@ -13,5 +13,12 @@
     <string name="set_content">Текст заметки\n</string>
     <string name="set_name">Название заметки</string>
     <string name="create">Создать заметку</string>
+    <string name="enable_self_destruct">Добавить дату самоуничтожения</string>
+    <string name="select_color">Цвет заметки:</string>
+    <string name="brightness">Brightness</string>
+    <string name="choose_color">Цвет заметки</string>
+    <string name="choose_color_title">Выбор цвета</string>
+    <string name="confirm">Done</string>
+    <string name="cancel">Отменить</string>
 
 </resources>

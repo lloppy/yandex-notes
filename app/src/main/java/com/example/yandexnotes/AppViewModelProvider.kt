@@ -1,5 +1,6 @@
 package com.example.yandexnotes
 
+import android.app.Application
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
@@ -14,25 +15,21 @@ import com.example.yandexnotes.ui.screens.item.edit.EditNoteViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
+        val repository: NotesRepository = FileNotebook()
+
         initializer {
-            val context = this.notesApplication().applicationContext
-            val repository: NotesRepository = FileNotebook(context)
             HomeViewModel(
                 repository = repository
             )
         }
 
         initializer {
-            val context = this.notesApplication().applicationContext
-            val repository: NotesRepository = FileNotebook(context)
             CreateNoteViewModel(
                 repository = repository
             )
         }
 
         initializer {
-            val context = this.notesApplication().applicationContext
-            val repository: NotesRepository = FileNotebook(context)
             EditNoteViewModel(
                 this.createSavedStateHandle(),
                 repository = repository

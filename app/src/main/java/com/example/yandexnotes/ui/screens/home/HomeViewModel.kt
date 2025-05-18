@@ -1,16 +1,16 @@
 package com.example.yandexnotes.ui.screens.home
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.yandexnotes.data.NotesRepository
-import com.example.yandexnotes.model.Note
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class HomeViewModel(
-    private val repository: NotesRepository
+    private val repository: NotesRepository,
 ) : ViewModel() {
     val uiState: StateFlow<HomeNotesState> =
         repository.notes.map {
@@ -23,6 +23,10 @@ class HomeViewModel(
 
     suspend fun deleteNoteById(noteUid: String) {
         repository.deleteNote(uid = noteUid)
+    }
+
+    fun loadFromFile(context: Context) {
+        repository.loadFromFile(context)
     }
 
 

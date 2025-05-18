@@ -21,7 +21,7 @@ import com.example.yandexnotes.AppViewModelProvider
 import com.example.yandexnotes.R
 import com.example.yandexnotes.ui.NotesAppBar
 import com.example.yandexnotes.ui.navigation.NavigationDestination
-import com.example.yandexnotes.ui.screens.item.NotesInputForm
+import com.example.yandexnotes.ui.screens.item.components.NotesInputForm
 
 object EditNoteDestination : NavigationDestination {
     override val route = "edit_note"

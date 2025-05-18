@@ -2,6 +2,7 @@ package com.example.yandexnotes.model
 
 import android.graphics.Color
 import org.json.JSONObject
+import java.time.LocalDateTime
 import java.util.UUID
 import android.graphics.Color as AndroidColor
 
@@ -11,6 +12,7 @@ data class Note(
     val content: String,
     val color: Int = AndroidColor.WHITE,
     val importance: Importance = Importance.NORMAL,
+    val selfDestructDate: LocalDateTime? = null
 ){
     companion object{
         fun parse(json: JSONObject): Note? {

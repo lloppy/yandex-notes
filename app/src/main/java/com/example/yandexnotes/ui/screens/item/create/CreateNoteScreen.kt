@@ -1,5 +1,7 @@
 package com.example.yandexnotes.ui.screens.item.create
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,13 +24,14 @@ import com.example.yandexnotes.AppViewModelProvider
 import com.example.yandexnotes.R
 import com.example.yandexnotes.ui.NotesAppBar
 import com.example.yandexnotes.ui.navigation.NavigationDestination
-import com.example.yandexnotes.ui.screens.item.NotesInputForm
+import com.example.yandexnotes.ui.screens.item.components.NotesInputForm
 
 object CreateNoteDestination : NavigationDestination {
     override val route = "create_note"
     override val title = R.string.create_note
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateNoteScreen(
@@ -36,6 +40,7 @@ fun CreateNoteScreen(
     viewModel: CreateNoteViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val paddingMedium = dimensionResource(R.dimen.padding_medium)
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -67,7 +72,7 @@ fun CreateNoteScreen(
 
             Button(
                 onClick = {
-                    viewModel.saveItem()
+                    viewModel.saveItem(context)
                     navigateBack()
                 },
                 enabled = viewModel.entryUiState.isEntryValid,

@@ -28,9 +28,6 @@ fun NotesNavigation(
                 onClickAddItem = {
                     navController.navigate(CreateNoteDestination.route)
                 },
-                onClickNote = {
-                    navController.navigate("${EditNoteDestination.route}/$it")
-                },
                 onClickEdit = {
                     navController.navigate("${EditNoteDestination.route}/$it")
                 },

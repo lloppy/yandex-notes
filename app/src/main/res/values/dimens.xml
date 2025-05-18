@@ -2,7 +2,7 @@
 <resources>
 
     <dimen name="padding_small">4.dp</dimen>
-    <dimen name="padding_medium">14.dp</dimen>
+    <dimen name="padding_medium">12.dp</dimen>
     <dimen name="padding_large">24.dp</dimen>
 
     <dimen name="loading_circle">70.dp</dimen>
