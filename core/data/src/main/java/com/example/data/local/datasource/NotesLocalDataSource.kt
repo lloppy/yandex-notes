@@ -27,12 +27,6 @@ class NotesLocalDataSource(
         }
     }
 
-    override suspend fun deleteNote(note: Note) {
-        dao.delete(
-            noteEntity = note.toEntity()
-        )
-    }
-
     override suspend fun deleteNoteById(id: Int) {
         dao.deleteById(id)
     }

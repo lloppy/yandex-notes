@@ -12,7 +12,9 @@ data class Note(
     val content: String,
     val color: Int = AndroidColor.WHITE,
     val importance: Importance = Importance.NORMAL,
-    val selfDestructDate: LocalDateTime? = null
+    val selfDestructDate: LocalDateTime? = null,
+    val createdAt: Long? = null,
+    val updatedAt: Long? = null,
 ){
     companion object{
         fun parse(json: JSONObject): Note? {

@@ -1,8 +1,11 @@
 package com.example.data.cache
 
 import android.content.Context
+import com.example.domain.LocalDataSource
+import com.example.domain.NotesRepository
+import com.example.domain.util.DataError
+import com.example.domain.util.EmptyResult
 import com.example.model.Note
-import com.example.model.Note.Companion
 import com.example.model.mapper.json
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +14,7 @@ import org.json.JSONArray
 import org.slf4j.LoggerFactory
 import java.io.File
 
-class FileNotebook : com.example.domain.NotesRepository {
+class FileNotebook : NotesRepository {
 
     private val logger = LoggerFactory.getLogger(FileNotebook::class.java)
 

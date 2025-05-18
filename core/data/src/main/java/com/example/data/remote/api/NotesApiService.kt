@@ -1,0 +1,51 @@
+package com.example.data.remote.api
+
+import com.example.data.remote.model.GetNoteResponse
+import com.example.data.remote.model.GetNotesResponse
+import com.example.data.remote.model.PatchNotesRequest
+import com.example.data.remote.model.SingleNoteRequest
+import com.example.data.remote.model.SingleNoteResponse
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.PATCH
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+
+interface NotesApiService {
+
+    @GET("list")
+    suspend fun getNotes(): GetNotesResponse
+
+    @PATCH("list")
+    suspend fun patchNotes(
+        @Header("X-Last-Known-Revision") revision: Int,
+        @Body request: PatchNotesRequest,
+    ): GetNotesResponse
+
+    @GET("list/{id}")
+    suspend fun getNote(@Path("id") id: String): GetNoteResponse
+
+    @POST("list")
+    suspend fun addNote(
+        @Header("X-Last-Known-Revision") revision: Int,
+        @Body request: SingleNoteRequest,
+    ): SingleNoteResponse
+
+    @PUT("list/{id}")
+    suspend fun updateNote(
+        @Header("X-Last-Known-Revision") revision: Int,
+        @Path("id") id: String,
+        @Body request: SingleNoteRequest,
+    ): SingleNoteResponse
+
+    @DELETE("list/{id}")
+    suspend fun deleteNote(
+        @Header("X-Last-Known-Revision") revision: Int,
+        @Path("id") id: String,
+    ): SingleNoteResponse
+
+
+}

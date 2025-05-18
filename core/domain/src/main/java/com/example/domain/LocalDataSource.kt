@@ -9,8 +9,6 @@ interface LocalDataSource {
 
     suspend fun insertNote(note: Note): EmptyResult<DataError.Local>
 
-    suspend fun deleteNote(note: Note)
-
     suspend fun deleteNoteById(id: Int)
 
     suspend fun deleteAllNotes()
