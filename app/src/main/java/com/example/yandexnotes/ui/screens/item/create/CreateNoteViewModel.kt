@@ -1,8 +1,6 @@
 package com.example.yandexnotes.ui.screens.item.create
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,7 +29,6 @@ class CreateNoteViewModel(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun saveItem(context: Context) {
         if (validateInput()) {
             repository.addNote(note = entryUiState.currentNote.toNote())
@@ -39,7 +36,7 @@ class CreateNoteViewModel(
         saveToFile(context)
     }
 
-    fun saveToFile(context: Context) {
-        repository.saveToFile(context)
+    private fun saveToFile(context: Context) {
+        repository.saveAllNotesToFile(context)
     }
 }

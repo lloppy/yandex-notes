@@ -1,7 +1,5 @@
 package com.example.yandexnotes.ui.screens.item.create
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,13 +29,12 @@ object CreateNoteDestination : NavigationDestination {
     override val title = R.string.create_note
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateNoteScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CreateNoteViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: CreateNoteViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     val paddingMedium = dimensionResource(R.dimen.padding_medium)
     val context = LocalContext.current
@@ -76,7 +73,9 @@ fun CreateNoteScreen(
                     navigateBack()
                 },
                 enabled = viewModel.entryUiState.isEntryValid,
-                modifier = modifier.fillMaxWidth().height(dimensionResource(R.dimen.button_size))
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(dimensionResource(R.dimen.button_size))
             ) {
                 Text(text = stringResource(R.string.create))
             }

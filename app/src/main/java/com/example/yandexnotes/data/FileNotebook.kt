@@ -38,13 +38,12 @@ class FileNotebook : NotesRepository {
         }
     }
 
-
     override fun deleteNote(uid: String) {
         _notes.value = _notes.value.filterNot { it.uid == uid }
         logger.debug("Удаление заметки UID=$uid, удалено")
     }
 
-    override fun saveToFile(context: Context) {
+    override fun saveAllNotesToFile(context: Context) {
         val file = File(context.filesDir, "notes.json")
         val jsonArray = JSONArray()
         _notes.value.forEach { jsonArray.put(it.json) }
@@ -52,7 +51,7 @@ class FileNotebook : NotesRepository {
         logger.debug("Сохранено ${_notes.value.size} заметок в файл")
     }
 
-    override fun loadFromFile(context: Context) {
+    override fun loadAllNotesFromFile(context: Context) {
         val file = File(context.filesDir, "notes.json")
         if (!file.exists()) {
             logger.debug("Файл не найден, загрузка пропущена")

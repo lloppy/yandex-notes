@@ -27,7 +27,7 @@ class HomeViewModel(
     }
 
     fun loadFromFile(context: Context) {
-        repository.loadFromFile(context)
+        repository.loadAllNotesFromFile(context)
     }
 
 
