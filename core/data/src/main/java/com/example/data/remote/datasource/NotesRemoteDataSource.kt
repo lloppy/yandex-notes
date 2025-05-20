@@ -150,9 +150,7 @@ private fun Network.Companion.fromException(e: Exception): Network {
             else -> UNKNOWN
         }
 
-        is com.google.gson.JsonSyntaxException,
-        is com.google.gson.JsonParseException,
-            -> SERIALIZATION
+        is kotlinx.serialization.SerializationException -> SERIALIZATION
 
         is java.io.IOException -> NO_INTERNET
         else -> UNKNOWN
