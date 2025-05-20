@@ -1,14 +1,18 @@
 package com.example.data.local.mappers
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.example.model.Importance
-import com.example.model.NoteCategory
-import com.example.model.NotePriority
-import com.example.model.NoteType
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @ProvidedTypeConverter
 class Converters {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
     @TypeConverter
     fun noteImportanceToString(importance: Importance): String {
@@ -22,5 +26,15 @@ class Converters {
         } catch (e: IllegalArgumentException) {
             Importance.NORMAL
         }
+    }
+
+    @TypeConverter
+    fun fromLocalDateTime(value: LocalDateTime?): String? {
+        return value?.format(formatter)
+    }
+
+    @TypeConverter
+    fun toLocalDateTime(value: String?): LocalDateTime? {
+        return value?.let { LocalDateTime.parse(it, formatter) }
     }
 }
