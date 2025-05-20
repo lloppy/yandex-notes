@@ -33,11 +33,12 @@ class CreateNoteViewModel(
         }
     }
 
-    fun saveItem(context: Context) {
+    fun saveItem() {
         if (validateInput()) {
-            repository.addNote(note = entryUiState.currentNote.toNote())
+            viewModelScope.launch {
+                repository.addNote(note = entryUiState.currentNote.toNote())
+            }
         }
-        repository.saveAllNotesToFile(context)
     }
 
 
@@ -50,6 +51,5 @@ class CreateNoteViewModel(
                 )
             }
         }
-        repository.saveAllNotesToFile(context)
     }
 }

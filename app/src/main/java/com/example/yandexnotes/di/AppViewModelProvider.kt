@@ -1,40 +1,35 @@
-package com.example.yandexnotes
+package com.example.yandexnotes.di
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.data.repository.FileNotebook
-import com.example.data.remote.datasource.NotesRemoteDataSource
-import com.example.domain.NotesRepository
-import com.example.domain.RemoteDataSource
-import com.example.yandexnotes.di.NetworkProvider
+import com.example.yandexnotes.YandexNotesApplication
 import com.example.yandexnotes.ui.screens.home.HomeViewModel
 import com.example.yandexnotes.ui.screens.item.create.CreateNoteViewModel
 import com.example.yandexnotes.ui.screens.item.edit.EditNoteViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
-        val dataSource: RemoteDataSource = NotesRemoteDataSource(api = NetworkProvider.notesApiService)
-        val repository: NotesRepository = FileNotebook(remoteDataSource = dataSource)
 
         initializer {
             HomeViewModel(
-                repository = repository
+                repository = notesApplication().container.notesRepository,
+                localRepository = notesApplication().container.localRepository
             )
         }
 
         initializer {
             CreateNoteViewModel(
-                repository = repository
+                repository = notesApplication().container.notesRepository,
             )
         }
 
         initializer {
             EditNoteViewModel(
                 this.createSavedStateHandle(),
-                repository = repository
+                repository = notesApplication().container.notesRepository,
             )
         }
     }

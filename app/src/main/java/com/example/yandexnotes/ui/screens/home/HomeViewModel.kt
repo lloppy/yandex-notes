@@ -3,6 +3,7 @@ package com.example.yandexnotes.ui.screens.home
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.LocalRepository
 import com.example.domain.NotesRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -10,11 +11,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class HomeViewModel(
-    private val repository: NotesRepository
+    private val repository: NotesRepository,
+    private val localRepository: LocalRepository
 ) : ViewModel() {
 
     val uiState: StateFlow<HomeNotesState> =
-        repository.notes.map {
+        localRepository.notes.map {
             HomeNotesState.Success(it)
         }.stateIn(
             scope = viewModelScope,
@@ -26,15 +28,9 @@ class HomeViewModel(
         repository.deleteNote(uid = noteUid)
     }
 
-    fun loadFromFile(context: Context) {
-        repository.loadAllNotesFromFile(context)
-    }
-
-    // используем при инициализации, когда еще нет заметок
     suspend fun syncFromServer() {
         repository.fetchNotesFromBackend()
     }
-
 
     companion object {
         const val DELAY_FOR_KEEPING_INSTANCE_AFTER_CLOSING = 3_000L

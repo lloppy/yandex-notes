@@ -56,7 +56,10 @@ class EditNoteViewModel(
 
     fun updateItem() {
         if (validateInput()) {
-            repository.updateNote(note = entryUiState.currentNote.toNote())
+            viewModelScope.launch {
+                repository.updateNote(note = entryUiState.currentNote.toNote())
+
+            }
         }
     }
 

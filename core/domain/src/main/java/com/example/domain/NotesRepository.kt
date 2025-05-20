@@ -6,16 +6,16 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {
     val notes: Flow<List<Note>>
-
-    // local, without saving
-    fun addNote(note: Note)
     fun getNoteByUid(uid: String): Flow<Note>
-    fun updateNote(note: Note)
-    fun deleteNote(uid: String)
+
+    suspend fun addNote(note: Note)
+    suspend fun updateNote(note: Note)
+    suspend fun deleteNote(uid: String)
+
 
     // all notes to json
-    fun saveAllNotesToFile(context: Context)
-    fun loadAllNotesFromFile(context: Context)
+    suspend fun saveAllNotesToFile(context: Context)
+    suspend fun loadAllNotesFromFile(context: Context)
 
     // backend
     suspend fun saveNoteToBackend(note: Note, deviceId: String)

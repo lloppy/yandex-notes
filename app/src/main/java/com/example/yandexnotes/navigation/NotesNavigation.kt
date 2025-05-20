@@ -31,7 +31,6 @@ fun NotesNavigation(
                 onClickEdit = {
                     navController.navigate("${EditNoteDestination.route}/$it")
                 },
-                onClickOpenDrawer = {},
                 modifier = Modifier
             )
         }

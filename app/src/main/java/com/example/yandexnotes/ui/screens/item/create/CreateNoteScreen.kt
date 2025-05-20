@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.yandexnotes.AppViewModelProvider
+import com.example.yandexnotes.di.AppViewModelProvider
 import com.example.yandexnotes.R
 import com.example.yandexnotes.ui.NotesAppBar
 import com.example.yandexnotes.navigation.NavigationDestination
@@ -70,7 +70,7 @@ fun CreateNoteScreen(
 
             Button(
                 onClick = {
-                    viewModel.saveItem(context)
+                    viewModel.saveItem()
                     navigateBack()
                 },
                 enabled = viewModel.entryUiState.isEntryValid,

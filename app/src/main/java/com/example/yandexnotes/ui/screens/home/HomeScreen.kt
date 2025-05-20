@@ -35,7 +35,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.yandexnotes.AppViewModelProvider
+import com.example.yandexnotes.di.AppViewModelProvider
 import com.example.yandexnotes.R
 import com.example.yandexnotes.navigation.NavigationDestination
 import com.example.yandexnotes.ui.NotesAppBar
@@ -53,19 +53,13 @@ object HomeDestination : NavigationDestination {
 fun HomeScreen(
     onClickAddItem: () -> Unit,
     onClickEdit: (String) -> Unit,
-    onClickOpenDrawer: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
-    LaunchedEffect(Unit) {
-        viewModel.loadFromFile(context = context)
-    }
 
     Scaffold(
         topBar = {

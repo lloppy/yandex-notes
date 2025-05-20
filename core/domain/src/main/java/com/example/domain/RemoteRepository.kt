@@ -6,7 +6,7 @@ import com.example.model.util.DataError
 import com.example.model.util.EmptyResult
 import com.example.model.util.Result
 
-interface RemoteDataSource {
+interface RemoteRepository {
 
     suspend fun getNotes(): Result<List<Note>, DataError.Network>
 

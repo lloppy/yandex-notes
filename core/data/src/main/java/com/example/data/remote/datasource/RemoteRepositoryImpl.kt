@@ -5,7 +5,7 @@ import com.example.data.remote.mapper.toDto
 import com.example.data.remote.mapper.toModel
 import com.example.data.remote.model.PatchNotesRequest
 import com.example.data.remote.model.SingleNoteRequest
-import com.example.domain.RemoteDataSource
+import com.example.domain.RemoteRepository
 import com.example.domain.model.NoteUidModel
 import com.example.model.Note
 import com.example.model.util.DataError.Network
@@ -21,9 +21,9 @@ import com.example.model.util.DataError.Network.UNKNOWN
 import com.example.model.util.EmptyResult
 import com.example.model.util.Result
 
-class NotesRemoteDataSource(
+class RemoteRepositoryImpl(
     private val api: NotesApiService,
-) : RemoteDataSource {
+) : RemoteRepository {
 
     private var revision: Int = 0
 

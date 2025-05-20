@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    id("com.google.devtools.ksp") version "2.1.10-1.0.31"
 }
 
 android {
@@ -72,6 +74,11 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.retrofit)
     implementation(libs.logging.interceptor)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
+    implementation(libs.androidx.room.ktx)
 
     // icons
     implementation(libs.material.icons.extended)
