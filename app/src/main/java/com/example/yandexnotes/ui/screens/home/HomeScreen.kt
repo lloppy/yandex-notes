@@ -37,8 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.yandexnotes.AppViewModelProvider
 import com.example.yandexnotes.R
-import com.example.yandexnotes.ui.NotesAppBar
 import com.example.yandexnotes.navigation.NavigationDestination
+import com.example.yandexnotes.ui.NotesAppBar
 import com.example.yandexnotes.ui.screens.home.components.NoteCard
 import com.example.yandexnotes.ui.screens.home.components.SwipeableWrapper
 import kotlinx.coroutines.launch
@@ -122,6 +122,14 @@ fun HomeScreen(
                     contentPadding = paddingValue
                 )
             }
+
+            is HomeNotesState.Error -> {
+                ErrorMessage(
+                    state = state,
+                    modifier = modifier,
+                    contentPadding = paddingValue
+                )
+            }
         }
     }
 }
@@ -182,5 +190,21 @@ fun HabitContent(
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         CircularProgressIndicator(modifier = Modifier.size(dimensionResource(R.dimen.loading_circle)))
+    }
+}
+
+@Composable
+fun ErrorMessage(
+    state: HomeNotesState.Error,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(contentPadding),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = state.message, color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
     }
 }

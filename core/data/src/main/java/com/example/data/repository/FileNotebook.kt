@@ -74,26 +74,6 @@ class FileNotebook(
         logger.debug("Загружено ${loadedNotes.size} заметок из файла")
     }
 
-    override fun saveNoteToCache(note: Note, context: Context) {
-        val file = File(context.filesDir, "note_${note.uid}.json")
-        file.writeText(note.json.toString())
-        logger.debug("Сохранена отдельная заметка UID=${note.uid}")
-    }
-
-    override fun loadNoteFromCache(uid: String, context: Context): Note? {
-        val file = File(context.filesDir, "note_${uid}.json")
-        if (!file.exists()) return null
-        val jsonNote = org.json.JSONObject(file.readText())
-        return Note.parse(jsonNote)
-    }
-
-    override fun deleteNoteFromCache(uid: String, context: Context) {
-        val file = File(context.filesDir, "note_${uid}.json")
-        if (file.exists()) {
-            file.delete()
-            logger.debug("Удалена заметка из кэша UID=$uid")
-        }
-    }
 
     // ---------- Реальные сетевые операции вместо заглушек ----------
 
@@ -114,7 +94,7 @@ class FileNotebook(
             }
             is Result.Error -> {
                 logger.error("Ошибка синхронизации заметки: ${result.error}")
-                throw Exception("Network error")
+                throw Exception("Network error: ${result.error}")
             }
         }
     }
@@ -130,7 +110,7 @@ class FileNotebook(
             }
             is Result.Error -> {
                 logger.error("Ошибка синхронизации заметки: ${result.error}")
-                throw Exception("Network error")
+                throw Exception("Network error: ${result.error}")
             }
         }
     }
@@ -151,11 +131,13 @@ class FileNotebook(
         return when (val result = remoteDataSource.getNotes()) {
             is Result.Success -> {
                 logger.info("Успешно загружено ${result.data.size} заметок с сервера")
-                result.data
+                result.data.also { notes ->
+                    _notes.value = notes
+                }
             }
             is Result.Error -> {
                 logger.error("Ошибка загрузки заметок с сервера")
-                throw Exception("Network error")
+                throw Exception("Сетевая ошибка: ${result.error}")
             }
         }
     }

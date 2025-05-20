@@ -13,14 +13,9 @@ interface NotesRepository {
     fun updateNote(note: Note)
     fun deleteNote(uid: String)
 
-    // all notes
+    // all notes to json
     fun saveAllNotesToFile(context: Context)
     fun loadAllNotesFromFile(context: Context)
-
-    // cache
-    fun saveNoteToCache(note: Note, context: Context)
-    fun loadNoteFromCache(uid: String, context: Context): Note?
-    fun deleteNoteFromCache(uid: String, context: Context)
 
     // backend
     suspend fun saveNoteToBackend(note: Note, deviceId: String)
