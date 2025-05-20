@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class HomeViewModel(
-    private val repository: NotesRepository,
+    private val repository: NotesRepository
 ) : ViewModel() {
 
     val uiState: StateFlow<HomeNotesState> =
@@ -28,6 +28,11 @@ class HomeViewModel(
 
     fun loadFromFile(context: Context) {
         repository.loadAllNotesFromFile(context)
+    }
+
+    // используем при инициализации, когда еще нет заметок
+    suspend fun syncFromServer() {
+        repository.fetchNotesFromBackend()
     }
 
 

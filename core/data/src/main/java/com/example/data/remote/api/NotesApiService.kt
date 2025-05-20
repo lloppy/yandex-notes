@@ -5,6 +5,7 @@ import com.example.data.remote.model.GetNotesResponse
 import com.example.data.remote.model.PatchNotesRequest
 import com.example.data.remote.model.SingleNoteRequest
 import com.example.data.remote.model.SingleNoteResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -17,35 +18,42 @@ import retrofit2.http.Path
 interface NotesApiService {
 
     @GET("list")
-    suspend fun getNotes(): GetNotesResponse
+    suspend fun getNotes(
+        @Header("X-Generate-Fails") generateFailsThreshold: Int? = null,
+    ): GetNotesResponse
 
     @PATCH("list")
     suspend fun patchNotes(
         @Header("X-Last-Known-Revision") revision: Int,
         @Body request: PatchNotesRequest,
+        @Header("X-Generate-Fails") generateFailsThreshold: Int? = null,
     ): GetNotesResponse
 
     @GET("list/{id}")
-    suspend fun getNote(@Path("id") id: String): GetNoteResponse
+    suspend fun getNote(
+        @Path("id") noteUid: String,
+        @Header("X-Generate-Fails") generateFailsThreshold: Int? = null,
+    ): GetNoteResponse
 
     @POST("list")
     suspend fun addNote(
         @Header("X-Last-Known-Revision") revision: Int,
         @Body request: SingleNoteRequest,
+        @Header("X-Generate-Fails") generateFailsThreshold: Int? = null,
     ): SingleNoteResponse
 
     @PUT("list/{id}")
     suspend fun updateNote(
         @Header("X-Last-Known-Revision") revision: Int,
-        @Path("id") id: String,
+        @Path("id") noteUid: String,
         @Body request: SingleNoteRequest,
+        @Header("X-Generate-Fails") generateFailsThreshold: Int? = null,
     ): SingleNoteResponse
 
     @DELETE("list/{id}")
     suspend fun deleteNote(
         @Header("X-Last-Known-Revision") revision: Int,
-        @Path("id") id: String,
+        @Path("id") noteUid: String,
+        @Header("X-Generate-Fails") generateFailsThreshold: Int? = null,
     ): SingleNoteResponse
-
-
 }

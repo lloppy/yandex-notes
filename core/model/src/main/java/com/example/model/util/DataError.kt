@@ -1,4 +1,4 @@
-package com.example.domain.util
+package com.example.model.util
 
 sealed interface DataError : Error {
     enum class Network : DataError {
@@ -10,7 +10,9 @@ sealed interface DataError : Error {
         PAYLOAD_TOO_LARGE,
         SERVER_ERROR,
         SERIALIZATION,
-        UNKNOWN
+        UNKNOWN;
+
+        companion object
     }
 
     enum class Local : DataError {

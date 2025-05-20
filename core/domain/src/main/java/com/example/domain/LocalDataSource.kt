@@ -1,7 +1,7 @@
 package com.example.domain
 
-import com.example.domain.util.DataError
-import com.example.domain.util.EmptyResult
+import com.example.model.util.DataError
+import com.example.model.util.EmptyResult
 import com.example.model.Note
 import kotlinx.coroutines.flow.Flow
 

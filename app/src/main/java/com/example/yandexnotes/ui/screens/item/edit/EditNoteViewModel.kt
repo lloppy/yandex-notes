@@ -1,5 +1,6 @@
 package com.example.yandexnotes.ui.screens.item.edit
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.NotesRepository
+import com.example.yandexnotes.di.DeviceIdProvider
 import com.example.yandexnotes.ui.screens.item.NoteEntity
 import com.example.yandexnotes.ui.screens.item.NoteEntryState
 import com.example.yandexnotes.ui.screens.item.toNote
@@ -55,6 +57,17 @@ class EditNoteViewModel(
     fun updateItem() {
         if (validateInput()) {
             repository.updateNote(note = entryUiState.currentNote.toNote())
+        }
+    }
+
+    fun updateAndSyncItem(context: Context) {
+        if (validateInput()) {
+            viewModelScope.launch {
+                repository.syncNoteToBackend(
+                    note = entryUiState.currentNote.toNote(),
+                    deviceId = DeviceIdProvider.getDeviceId(context)
+                )
+            }
         }
     }
 }

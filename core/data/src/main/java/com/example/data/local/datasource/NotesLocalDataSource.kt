@@ -5,9 +5,9 @@ import com.example.data.local.dao.NoteDao
 import com.example.data.local.mappers.toDomain
 import com.example.data.local.mappers.toEntity
 import com.example.domain.LocalDataSource
-import com.example.domain.util.DataError
-import com.example.domain.util.EmptyResult
-import com.example.domain.util.Result
+import com.example.model.util.DataError
+import com.example.model.util.EmptyResult
+import com.example.model.util.Result
 import com.example.model.Note
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

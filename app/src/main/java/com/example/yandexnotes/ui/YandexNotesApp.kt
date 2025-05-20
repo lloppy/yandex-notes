@@ -3,6 +3,7 @@ package com.example.yandexnotes.ui
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,9 +37,8 @@ fun NotesAppBar(
     title: String,
     canNavigateBack: Boolean,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    onClickOpenDrawer: () -> Unit = { },
-    navigateUp: () -> Unit = { }
-
+    navigateUp: () -> Unit = { },
+    onClickSync: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = title, style = MaterialTheme.typography.headlineSmall) },
@@ -51,11 +51,14 @@ fun NotesAppBar(
                         contentDescription = stringResource(R.string.back_button)
                     )
                 }
-            } else {
-                IconButton(onClick = onClickOpenDrawer) {
+            }
+        },
+        actions = {
+            if (canNavigateBack.not()) {
+                IconButton(onClick = onClickSync) {
                     Icon(
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = stringResource(R.string.menu_button)
+                        imageVector = Icons.Default.Sync,
+                        contentDescription = stringResource(R.string.sync)
                     )
                 }
             }

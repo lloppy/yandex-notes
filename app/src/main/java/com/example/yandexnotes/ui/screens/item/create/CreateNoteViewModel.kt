@@ -5,10 +5,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domain.NotesRepository
+import com.example.yandexnotes.di.DeviceIdProvider
 import com.example.yandexnotes.ui.screens.item.NoteEntity
 import com.example.yandexnotes.ui.screens.item.NoteEntryState
 import com.example.yandexnotes.ui.screens.item.toNote
+import kotlinx.coroutines.launch
 
 class CreateNoteViewModel(
     private val repository: NotesRepository,
@@ -33,6 +36,19 @@ class CreateNoteViewModel(
     fun saveItem(context: Context) {
         if (validateInput()) {
             repository.addNote(note = entryUiState.currentNote.toNote())
+        }
+        saveToFile(context)
+    }
+
+
+    fun saveAndSyncItem(context: Context) {
+        if (validateInput()) {
+            viewModelScope.launch {
+                repository.saveNoteToBackend(
+                    note = entryUiState.currentNote.toNote(),
+                    deviceId = DeviceIdProvider.getDeviceId(context)
+                )
+            }
         }
         saveToFile(context)
     }

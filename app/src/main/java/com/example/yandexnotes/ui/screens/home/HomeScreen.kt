@@ -73,7 +73,11 @@ fun HomeScreen(
                 title = stringResource(HomeDestination.title),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior,
-                onClickOpenDrawer = onClickOpenDrawer
+                onClickSync = {
+                    coroutineScope.launch {
+                        viewModel.syncFromServer()
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -147,9 +151,6 @@ fun HabitContent(
         ) {
             items(items = notes, key = { it.uid }) { note ->
                 SwipeableWrapper(
-                    onSwipeDelete = {
-                        onSwipeDelete(note.uid)
-                    },
                     onSwipeEdit = {
                         onSwipeEdit(note.uid)
                     },

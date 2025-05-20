@@ -66,5 +66,13 @@ dependencies {
     // navigation
     implementation(libs.androidx.navigation.compose)
 
+    // retrofit2
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.okhttp)
+    implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
 
+    // icons
+    implementation(libs.material.icons.extended)
 }

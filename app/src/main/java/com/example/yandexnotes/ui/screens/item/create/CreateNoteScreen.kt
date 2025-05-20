@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -78,6 +79,19 @@ fun CreateNoteScreen(
                     .height(dimensionResource(R.dimen.button_size))
             ) {
                 Text(text = stringResource(R.string.create))
+            }
+
+            OutlinedButton(
+                onClick = {
+                    viewModel.saveAndSyncItem(context)
+                    navigateBack()
+                },
+                enabled = viewModel.entryUiState.isEntryValid,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(dimensionResource(R.dimen.button_size))
+            ) {
+                Text(text = stringResource(R.string.create_and_sync))
             }
         }
     }

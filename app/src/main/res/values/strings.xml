@@ -20,5 +20,8 @@
     <string name="choose_color_title">Выбор цвета</string>
     <string name="confirm">Done</string>
     <string name="cancel">Отменить</string>
+    <string name="delete">Delete</string>
+    <string name="sync">sync</string>
+    <string name="create_and_sync">Создать и синхронизировать заметку</string>
 
 </resources>

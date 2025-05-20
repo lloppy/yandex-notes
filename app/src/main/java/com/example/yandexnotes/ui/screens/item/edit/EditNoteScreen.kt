@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,6 +39,7 @@ fun EditNoteScreen(
     viewModel: EditNoteViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val paddingMedium = dimensionResource(R.dimen.padding_medium)
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -71,6 +73,17 @@ fun EditNoteScreen(
             Button(
                 onClick = {
                     viewModel.updateItem()
+                    navigateBack()
+                },
+                enabled = viewModel.entryUiState.isEntryValid,
+                modifier = modifier.fillMaxWidth().height(dimensionResource(R.dimen.button_size))
+            ) {
+                Text(text = stringResource(R.string.save))
+            }
+
+            Button(
+                onClick = {
+                    viewModel.updateAndSyncItem(context)
                     navigateBack()
                 },
                 enabled = viewModel.entryUiState.isEntryValid,

@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.yandexnotes.R
@@ -70,7 +71,7 @@ fun ColorPaletteDialog(
                             .size(40.dp)
                             .background(selectedColor.copy(alpha = brightness))
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
 
                     Text(text = stringResource(R.string.brightness))
 

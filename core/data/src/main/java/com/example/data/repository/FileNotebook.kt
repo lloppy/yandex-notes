@@ -1,11 +1,10 @@
-package com.example.data.cache
+package com.example.data.repository
 
 import android.content.Context
-import com.example.domain.LocalDataSource
 import com.example.domain.NotesRepository
-import com.example.domain.util.DataError
-import com.example.domain.util.EmptyResult
+import com.example.domain.RemoteDataSource
 import com.example.model.Note
+import com.example.model.util.Result
 import com.example.model.mapper.json
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +13,9 @@ import org.json.JSONArray
 import org.slf4j.LoggerFactory
 import java.io.File
 
-class FileNotebook : NotesRepository {
+class FileNotebook(
+    private val remoteDataSource: RemoteDataSource
+) : NotesRepository {
 
     private val logger = LoggerFactory.getLogger(FileNotebook::class.java)
 
@@ -33,7 +34,7 @@ class FileNotebook : NotesRepository {
             emit(habit)
         }
 
-    override fun updateNote(note: Note)  {
+    override fun updateNote(note: Note) {
         val updatedNotes = _notes.value.toMutableList()
         val index = updatedNotes.indexOfFirst { it.uid == note.uid }
         if (index != -1) {
@@ -94,20 +95,69 @@ class FileNotebook : NotesRepository {
         }
     }
 
-    // ---------- Заглушки для сетевых операций ----------
+    // ---------- Реальные сетевые операции вместо заглушек ----------
 
-    override suspend fun syncNoteToBackend(note: Note) {
-        logger.info("Заглушка: отправка заметки на бэкенд: ${note.title}")
-        // здесь будет вызов API в будущем
+    override suspend fun syncNoteToBackend(note: Note, deviceId: String) {
+        when (val result = remoteDataSource.updateNote(
+            note = note,
+            deviceId = deviceId
+        )) {
+            is Result.Success -> {
+
+                val updatedNotes = _notes.value.toMutableList()
+                val index = updatedNotes.indexOfFirst { it.uid == note.uid }
+                if (index != -1) {
+                    updatedNotes[index] = note
+                    _notes.value = updatedNotes
+                }
+                logger.info("Заметка успешно синхронизирована: ${note.title}")
+            }
+            is Result.Error -> {
+                logger.error("Ошибка синхронизации заметки: ${result.error}")
+                throw Exception("Network error")
+            }
+        }
+    }
+
+    override suspend fun saveNoteToBackend(note: Note, deviceId: String) {
+        when (val result = remoteDataSource.addNote(
+            note = note,
+            deviceId = deviceId
+        )) {
+            is Result.Success -> {
+                _notes.value += note
+                logger.info("Заметка успешно синхронизирована: ${note.title}")
+            }
+            is Result.Error -> {
+                logger.error("Ошибка синхронизации заметки: ${result.error}")
+                throw Exception("Network error")
+            }
+        }
     }
 
     override suspend fun deleteNoteFromBackend(uid: String) {
-        logger.info("Заглушка: удаление заметки с бэкенда UID=$uid")
+        when (remoteDataSource.deleteNote(uid)) {
+            is Result.Success -> {
+                logger.info("Заметка успешно удалена с сервера UID=$uid")
+            }
+            is Result.Error -> {
+                logger.error("Ошибка удаления заметки: $uid")
+                throw Exception("Network error")
+            }
+        }
     }
 
     override suspend fun fetchNotesFromBackend(): List<Note> {
-        logger.info("Заглушка: загрузка заметок с бэкенда")
-        return emptyList()
+        return when (val result = remoteDataSource.getNotes()) {
+            is Result.Success -> {
+                logger.info("Успешно загружено ${result.data.size} заметок с сервера")
+                result.data
+            }
+            is Result.Error -> {
+                logger.error("Ошибка загрузки заметок с сервера")
+                throw Exception("Network error")
+            }
+        }
     }
 }
 
