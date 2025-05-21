@@ -62,9 +62,7 @@ class RemoteRepositoryImpl(
             logger.debug("Adding new note: ${note.title} (${note.uid})")
             val response = api.addNote(
                 revision = revision,
-                request = SingleNoteRequest(
-                    element = note.toDto(deviceId)
-                )
+                request = SingleNoteRequest(note.toDto(deviceId))
             )
             revision = response.revision
             logger.info("Successfully added note ${response.element.id}, new revision: $revision")
@@ -83,7 +81,7 @@ class RemoteRepositoryImpl(
                 revision = revision,
                 noteUid = note.uid,
                 request = SingleNoteRequest(
-                    note.toDto(deviceId)
+                    element = note.toDto(deviceId)
                 )
             )
             revision = response.revision

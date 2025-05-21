@@ -71,6 +71,11 @@ fun HomeScreen(
                     coroutineScope.launch {
                         viewModel.syncFromServer()
                     }
+                },
+                onClickDeleteAllFromServer = {
+                    coroutineScope.launch {
+                        viewModel.deleteAllFromServer()
+                    }
                 }
             )
         },

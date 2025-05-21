@@ -72,11 +72,13 @@ class NotesRepositoryImpl(
                     localRepository.addNote(note.copy(uid = result.data.uid))
                     logger.info("Successfully saved note to backend: ${note.title}")
                 }
+
                 is Result.Error -> {
                     logger.error("Failed to save note: ${result.error}")
                     when (result.error) {
                         DataError.Network.BAD_REQUEST ->
                             throw Exception("Invalid note data: please check your input")
+
                         DataError.Network.NO_INTERNET -> throw Exception("No internet")
                         else -> throw Exception("Failed to save note: ${result.error}")
                     }
@@ -84,7 +86,7 @@ class NotesRepositoryImpl(
             }
         } catch (e: Exception) {
             logger.error("Error during note save: ${note.uid}", e)
-            throw e // Re-throw to let ViewModel handle it
+            throw e
         }
     }
 
@@ -127,5 +129,9 @@ class NotesRepositoryImpl(
                 emptyList()
             }
         }
+    }
+
+    override suspend fun deleteAllNotesFromServer() {
+
     }
 }

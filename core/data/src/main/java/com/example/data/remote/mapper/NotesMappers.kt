@@ -4,16 +4,17 @@ import android.graphics.Color
 import com.example.data.remote.model.TodoItemDto
 import com.example.model.Importance
 import com.example.model.Note
+import java.util.Date
 import java.util.UUID
 
 fun Note.toDto(deviceId: String): TodoItemDto = TodoItemDto(
     id = this.uid,
     text = this.title,
     importance = this.importance.engName,
-    selfDestructDate = this.selfDestructDate,
+    deadline = this.selfDestructDate,
     done = false,
-    createdAt = this.createdAt ?: System.currentTimeMillis(),
-    changedAt = this.updatedAt ?: System.currentTimeMillis(),
+    createdAt = this.createdAt ?: Date().time,
+    changedAt = this.updatedAt ?: Date().time,
     lastUpdatedBy = deviceId,
     color = if (this.color != Color.WHITE) {
         String.format("#%06X", 0xFFFFFF and this.color)
@@ -39,7 +40,7 @@ fun TodoItemDto.toModel(): Note = Note(
             Color.WHITE
         }
     } ?: Color.WHITE,
-    selfDestructDate = this.selfDestructDate,
+    selfDestructDate = this.deadline,
     createdAt = this.createdAt,
     updatedAt = this.changedAt
 )

@@ -22,4 +22,5 @@ interface NotesRepository {
     suspend fun syncNoteToBackend(note: Note, deviceId: String)
     suspend fun deleteNoteFromBackend(uid: String)
     suspend fun fetchNotesFromBackend(): List<Note>
+    suspend fun deleteAllNotesFromServer()
 }

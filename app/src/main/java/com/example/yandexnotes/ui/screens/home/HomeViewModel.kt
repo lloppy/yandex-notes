@@ -1,6 +1,5 @@
 package com.example.yandexnotes.ui.screens.home
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.LocalRepository
@@ -30,6 +29,10 @@ class HomeViewModel(
 
     suspend fun syncFromServer() {
         repository.fetchNotesFromBackend()
+    }
+
+    suspend fun deleteAllFromServer() {
+        repository.deleteAllNotesFromServer()
     }
 
     companion object {
