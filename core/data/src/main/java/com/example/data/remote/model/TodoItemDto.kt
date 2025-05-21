@@ -13,6 +13,6 @@ data class TodoItemDto(
     @SerialName("done") val done: Boolean,
     @SerialName("created_at") val createdAt: Long,
     @SerialName("changed_at") val changedAt: Long = Date().time,
-    @SerialName("last_updated_by") val lastUpdatedBy: String = "124",
+    @SerialName("last_updated_by") val lastUpdatedBy: String,
     @SerialName("color") val color: String? = null,
 )

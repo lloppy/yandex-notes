@@ -1,6 +1,7 @@
 package com.example.yandexnotes.ui.screens.item.components
 
 import android.app.DatePickerDialog
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -43,7 +45,7 @@ fun NotesInputForm(
     val context = LocalContext.current
 
     var showColorDialog by remember { mutableStateOf(false) }
-    val currentColor = remember { mutableStateOf(Color.Red) }
+    var currentColor by remember { mutableStateOf(Color(noteEntity.color)) }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
         OutlinedTextField(
@@ -99,24 +101,12 @@ fun NotesInputForm(
         }
 
         ColorPicker(
-            initialColor = Color(noteEntity.color),
-            onColorSelected = {
-                onValueChange(noteEntity.copy(color = it.value.toInt()))
+            initialColor = currentColor,
+            onColorSelected = { newColor ->
+                currentColor = newColor
+                onValueChange(noteEntity.copy(color = newColor.toArgb()))
             },
-            onOpenFullPalette = {
-                showColorDialog = true
-            },
-            customColor = Brush.horizontalGradient(
-                colors = listOf(
-                    Color.Red,
-                    Color.Yellow,
-                    Color.Green,
-                    Color.Cyan,
-                    Color.Blue,
-                    Color.Magenta,
-                    Color.Red
-                )
-            )
+            onOpenFullPalette = { showColorDialog = true }
         )
 
         ImportanceSelector(
@@ -126,10 +116,11 @@ fun NotesInputForm(
 
         if (showColorDialog) {
             ColorPaletteDialog(
-                initialColor = currentColor.value,
+                initialColor = currentColor,
                 onDismiss = { showColorDialog = false },
-                onColorSelected = {
-                    currentColor.value = it
+                onColorSelected = { newColor ->
+                    currentColor = newColor
+                    onValueChange(noteEntity.copy(color = newColor.toArgb()))
                     showColorDialog = false
                 }
             )

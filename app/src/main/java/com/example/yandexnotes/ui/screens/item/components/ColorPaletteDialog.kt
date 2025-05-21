@@ -1,5 +1,6 @@
 package com.example.yandexnotes.ui.screens.item.components
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -31,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +52,8 @@ fun ColorPaletteDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             Button(onClick = {
-                onColorSelected(selectedColor)
+                onColorSelected(selectedColor.copy(alpha = brightness))
+                onDismiss()
             }) {
                 Text(text = stringResource(R.string.confirm))
             }

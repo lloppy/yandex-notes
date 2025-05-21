@@ -1,5 +1,6 @@
 package com.example.yandexnotes.ui.screens.item.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,7 +32,6 @@ fun ColorPicker(
     initialColor: Color,
     onColorSelected: (Color) -> Unit,
     onOpenFullPalette: () -> Unit,
-    customColor: Brush
 ) {
     var selectedColor by remember { mutableStateOf(initialColor) }
 
@@ -76,7 +77,11 @@ fun ColorPicker(
                 }
             }
 
-            RainbowBox(defaultColors, selectedColor, customColor, onOpenFullPalette)
+            RainbowBox(
+                defaultColors = defaultColors,
+                selectedColor = selectedColor,
+                onOpenFullPalette = onOpenFullPalette
+            )
         }
     }
 }
@@ -85,14 +90,23 @@ fun ColorPicker(
 private fun RainbowBox(
     defaultColors: List<Color>,
     selectedColor: Color,
-    customColor: Brush,
     onOpenFullPalette: () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .size(40.dp)
             .background(
-                brush = customColor
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        Color.Red,
+                        Color.Yellow,
+                        Color.Green,
+                        Color.Cyan,
+                        Color.Blue,
+                        Color.Magenta,
+                        Color.Red
+                    )
+                )
             )
             .border(
                 width = if (!defaultColors.contains(selectedColor)) 2.dp else 0.dp,
@@ -114,4 +128,3 @@ private fun RainbowBox(
         }
     }
 }
-
