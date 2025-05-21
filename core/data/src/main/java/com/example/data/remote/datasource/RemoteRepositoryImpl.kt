@@ -63,7 +63,7 @@ class RemoteRepositoryImpl(
             val response = api.addNote(
                 revision = revision,
                 request = SingleNoteRequest(
-                    note.toDto(deviceId)
+                    element = note.toDto(deviceId)
                 )
             )
             revision = response.revision

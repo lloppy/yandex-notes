@@ -3,6 +3,7 @@ package com.example.data.remote.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.util.Date
+import java.util.UUID
 
 @Serializable
 data class TodoItemDto(

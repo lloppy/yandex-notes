@@ -1,13 +1,10 @@
 package com.example.data.remote.mapper
 
 import android.graphics.Color
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.data.remote.model.TodoItemDto
 import com.example.model.Importance
 import com.example.model.Note
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.util.UUID
 
 fun Note.toDto(deviceId: String): TodoItemDto = TodoItemDto(
     id = this.uid,
@@ -22,8 +19,7 @@ fun Note.toDto(deviceId: String): TodoItemDto = TodoItemDto(
         String.format("#%06X", 0xFFFFFF and this.color)
     } else {
         null
-    },
-
+    }
 )
 
 fun TodoItemDto.toModel(): Note = Note(
