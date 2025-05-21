@@ -27,6 +27,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import com.example.yandexnotes.R
 import com.example.yandexnotes.ui.screens.item.NoteEntity
+import com.example.yandexnotes.ui.screens.item.toFormattedDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.Calendar
 
 @Composable
@@ -90,7 +93,7 @@ fun NotesInputForm(
                     Text(text = "Выбрать дату")
                 }
                 if (noteEntity.selfDestructDate != null) {
-                    Text(text = "Дата самоуничтожения: ${noteEntity.selfDestructDate}")
+                    Text(text = "Дата самоуничтожения: ${noteEntity.selfDestructDate.toFormattedDate()}")
                 }
             }
         }
@@ -137,8 +140,15 @@ fun NotesInputForm(
             DatePickerDialog(
                 context,
                 { _, year, month, day ->
-                    val date = "$day.${month + 1}.$year"
-                    onValueChange(noteEntity.copy(selfDestructDate = date))
+                    val localDateTime = LocalDateTime.of(
+                        year,
+                        month + 1,
+                        day,
+                        0,
+                        0
+                    )
+                    val timestamp = localDateTime.toEpochSecond(ZoneOffset.UTC)
+                    onValueChange(noteEntity.copy(selfDestructDate = timestamp))
                     showDatePicker = false
                 },
                 calendar.get(Calendar.YEAR),

@@ -20,5 +20,5 @@ data class NoteEntity(
     val importance: Importance = Importance.NORMAL,
 
     @ColumnInfo("self_destruct_date")
-    val selfDestructDate: LocalDateTime = LocalDateTime.now().plusDays(1)
+    val selfDestructDate: Long? = null,
 )

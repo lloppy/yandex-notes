@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -24,6 +25,7 @@ import com.example.yandexnotes.R
 import com.example.yandexnotes.ui.NotesAppBar
 import com.example.yandexnotes.navigation.NavigationDestination
 import com.example.yandexnotes.ui.screens.item.components.NotesInputForm
+import kotlinx.coroutines.launch
 
 object CreateNoteDestination : NavigationDestination {
     override val route = "create_note"
@@ -37,6 +39,8 @@ fun CreateNoteScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateNoteViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     val paddingMedium = dimensionResource(R.dimen.padding_medium)
     val context = LocalContext.current
 
@@ -70,8 +74,10 @@ fun CreateNoteScreen(
 
             Button(
                 onClick = {
-                    viewModel.saveItem()
-                    navigateBack()
+                    coroutineScope.launch {
+                        viewModel.saveItem()
+                        navigateBack()
+                    }
                 },
                 enabled = viewModel.entryUiState.isEntryValid,
                 modifier = modifier
@@ -83,8 +89,10 @@ fun CreateNoteScreen(
 
             OutlinedButton(
                 onClick = {
-                    viewModel.saveAndSyncItem(context)
-                    navigateBack()
+                    coroutineScope.launch {
+                        viewModel.saveAndSyncItem(context)
+                        navigateBack()
+                    }
                 },
                 enabled = viewModel.entryUiState.isEntryValid,
                 modifier = modifier

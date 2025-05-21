@@ -1,13 +1,18 @@
 package com.example.data.remote.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import java.util.Date
+
+@Serializable
 data class TodoItemDto(
-    val id: String,
-    val text: String,
-    val importance: String,
-    val deadline: Long?,
-    val done: Boolean,
-    val color: String?,
-    val createdAt: Long,
-    val changedAt: Long,
-    val lastUpdatedBy: String
+    @SerialName("id") val id: String,
+    @SerialName("text") val text: String,
+    @SerialName("importance") val importance: String,
+    @SerialName("deadline") val selfDestructDate: Long? = null,
+    @SerialName("done") val done: Boolean,
+    @SerialName("created_at") val createdAt: Long,
+    @SerialName("changed_at") val changedAt: Long = Date().time,
+    @SerialName("last_updated_by") val lastUpdatedBy: String = "124",
+    @SerialName("color") val color: String? = null,
 )

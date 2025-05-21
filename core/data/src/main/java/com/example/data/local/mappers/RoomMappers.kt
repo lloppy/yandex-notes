@@ -19,5 +19,5 @@ fun Note.toEntity(): NoteEntity = NoteEntity(
     content = this.content,
     color = this.color,
     importance = this.importance,
-    selfDestructDate = this.selfDestructDate ?: LocalDateTime.now().plusDays(1)
+    selfDestructDate = this.selfDestructDate
 )

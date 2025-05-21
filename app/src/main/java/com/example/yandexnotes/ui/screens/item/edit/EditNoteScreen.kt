@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -24,6 +25,7 @@ import com.example.yandexnotes.R
 import com.example.yandexnotes.ui.NotesAppBar
 import com.example.yandexnotes.navigation.NavigationDestination
 import com.example.yandexnotes.ui.screens.item.components.NotesInputForm
+import kotlinx.coroutines.launch
 
 object EditNoteDestination : NavigationDestination {
     override val route = "edit_note"
@@ -39,6 +41,8 @@ fun EditNoteScreen(
     modifier: Modifier = Modifier,
     viewModel: EditNoteViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     val paddingMedium = dimensionResource(R.dimen.padding_medium)
     val context = LocalContext.current
 
@@ -73,8 +77,10 @@ fun EditNoteScreen(
 
             Button(
                 onClick = {
-                    viewModel.updateItem()
-                    navigateBack()
+                    coroutineScope.launch {
+                        viewModel.updateItem()
+                        navigateBack()
+                    }
                 },
                 enabled = viewModel.entryUiState.isEntryValid,
                 modifier = modifier.fillMaxWidth().height(dimensionResource(R.dimen.button_size))
@@ -84,8 +90,10 @@ fun EditNoteScreen(
 
             OutlinedButton (
                 onClick = {
-                    viewModel.updateAndSyncItem(context)
-                    navigateBack()
+                    coroutineScope.launch {
+                        viewModel.updateAndSyncItem(context)
+                        navigateBack()
+                    }
                 },
                 enabled = viewModel.entryUiState.isEntryValid,
                 modifier = modifier.fillMaxWidth().height(dimensionResource(R.dimen.button_size))

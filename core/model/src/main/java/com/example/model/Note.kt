@@ -3,6 +3,7 @@ package com.example.model
 import android.graphics.Color
 import org.json.JSONObject
 import java.time.LocalDateTime
+import java.util.Date
 import java.util.UUID
 import android.graphics.Color as AndroidColor
 
@@ -12,9 +13,9 @@ data class Note(
     val content: String,
     val color: Int = AndroidColor.WHITE,
     val importance: Importance = Importance.NORMAL,
-    val selfDestructDate: LocalDateTime? = null,
+    val selfDestructDate: Long? = null, // Unix timestamp in seconds
     val createdAt: Long? = null,
-    val updatedAt: Long? = null,
+    val updatedAt: Long? = Date().time,
 ){
     companion object{
         fun parse(json: JSONObject): Note? {

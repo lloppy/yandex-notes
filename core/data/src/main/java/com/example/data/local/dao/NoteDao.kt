@@ -24,7 +24,7 @@ interface NoteDao {
         content: String,
         color: Int,
         importance: Importance,
-        selfDestructDate: LocalDateTime?
+        selfDestructDate: Long?
     ): Int
 
     @Delete

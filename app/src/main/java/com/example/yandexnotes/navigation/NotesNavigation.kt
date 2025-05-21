@@ -18,6 +18,7 @@ import com.example.yandexnotes.ui.screens.item.edit.EditNoteScreen
 @Composable
 fun NotesNavigation(
     navController: NavHostController,
+    modifier: Modifier
 ) {
     NavHost(
         navController = navController,

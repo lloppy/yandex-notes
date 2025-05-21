@@ -23,6 +23,7 @@ import org.junit.After
 import org.junit.Before
 import java.io.IOException
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @RunWith(AndroidJUnit4::class)
 class RoomRepositoryImplTest {
@@ -167,7 +168,7 @@ object TestData {
             content = "Content 1",
             color = Color.RED,
             importance = Importance.HIGH,
-            selfDestructDate = LocalDateTime.now().plusDays(1)
+            selfDestructDate = LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC)
         ),
         Note(
             uid = "uid2",
@@ -175,7 +176,7 @@ object TestData {
             content = "Content 2",
             color = Color.BLUE,
             importance = Importance.NORMAL,
-            selfDestructDate = LocalDateTime.now().plusDays(2)
+            selfDestructDate = LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC)
         )
     )
 }

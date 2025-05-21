@@ -1,21 +1,22 @@
-package com.example.data.repository
+package com.example.data
 
 import android.content.Context
 import com.example.domain.LocalRepository
 import com.example.domain.NotesRepository
 import com.example.domain.RemoteRepository
 import com.example.model.Note
+import com.example.model.util.DataError
 import com.example.model.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.slf4j.LoggerFactory
 
-class FileNotebook(
+class NotesRepositoryImpl(
     private val remoteRepository: RemoteRepository,
     private val localRepository: LocalRepository,
 ) : NotesRepository {
 
-    private val logger = LoggerFactory.getLogger(FileNotebook::class.java)
+    private val logger = LoggerFactory.getLogger(NotesRepositoryImpl::class.java)
     override val notes: Flow<List<Note>> = localRepository.notes
 
     override suspend fun addNote(note: Note) {
@@ -63,18 +64,27 @@ class FileNotebook(
     }
 
     override suspend fun saveNoteToBackend(note: Note, deviceId: String) {
-        when (val result = remoteRepository.addNote(note, deviceId)) {
-            is Result.Success -> {
-                localRepository.addNote(note)
-                logger.info("Заметка успешно сохранена на сервере: ${note.title}")
+        try {
+            logger.info("Saving note to backend: ${note.title} (${note.uid})")
+            when (val result = remoteRepository.addNote(note, deviceId)) {
+                is Result.Success -> {
+                    logger.info("Note saved to backend, updating local copy")
+                    localRepository.addNote(note.copy(uid = result.data.uid))
+                    logger.info("Successfully saved note to backend: ${note.title}")
+                }
+                is Result.Error -> {
+                    logger.error("Failed to save note: ${result.error}")
+                    when (result.error) {
+                        DataError.Network.BAD_REQUEST ->
+                            throw Exception("Invalid note data: please check your input")
+                        DataError.Network.NO_INTERNET -> throw Exception("No internet")
+                        else -> throw Exception("Failed to save note: ${result.error}")
+                    }
+                }
             }
-
-            is Result.Error -> {
-                logger.error("Ошибка сохранения заметки: ${result.error}")
-                throw Exception("Network error: ${result.error}")
-            }
-
-            else -> {}
+        } catch (e: Exception) {
+            logger.error("Error during note save: ${note.uid}", e)
+            throw e // Re-throw to let ViewModel handle it
         }
     }
 

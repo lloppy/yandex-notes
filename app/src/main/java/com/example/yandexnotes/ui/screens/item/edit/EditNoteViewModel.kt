@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class EditNoteViewModel(
     savedStateHandle: SavedStateHandle,
-    private val repository: NotesRepository
+    private val repository: NotesRepository,
 ) : ViewModel() {
     private val noteUid: String = checkNotNull(savedStateHandle[EditNoteDestination.itemIdArg])
 
@@ -54,23 +54,18 @@ class EditNoteViewModel(
         }
 
 
-    fun updateItem() {
+    suspend fun updateItem() {
         if (validateInput()) {
-            viewModelScope.launch {
-                repository.updateNote(note = entryUiState.currentNote.toNote())
-
-            }
+            repository.updateNote(note = entryUiState.currentNote.toNote())
         }
     }
 
-    fun updateAndSyncItem(context: Context) {
+    suspend fun updateAndSyncItem(context: Context) {
         if (validateInput()) {
-            viewModelScope.launch {
-                repository.syncNoteToBackend(
-                    note = entryUiState.currentNote.toNote(),
-                    deviceId = DeviceIdProvider.getDeviceId(context)
-                )
-            }
+            repository.syncNoteToBackend(
+                note = entryUiState.currentNote.toNote(),
+                deviceId = DeviceIdProvider.getDeviceId(context)
+            )
         }
     }
 }

@@ -27,7 +27,8 @@ fun YandexNotesApp(
     modifier: Modifier = Modifier
 ) {
     NotesNavigation(
-        navController = navController
+        navController = navController,
+        modifier = modifier
     )
 }
 
