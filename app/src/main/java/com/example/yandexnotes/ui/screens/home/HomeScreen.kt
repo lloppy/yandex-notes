@@ -109,7 +109,7 @@ fun HomeScreen(
                     },
                     onSwipeDelete = {
                         coroutineScope.launch {
-                            viewModel.deleteNoteById(it)
+                            viewModel.deleteNoteFromServer(it)
                         }
                     },
                     onSwipeEdit = {

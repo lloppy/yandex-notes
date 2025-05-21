@@ -132,6 +132,6 @@ class NotesRepositoryImpl(
     }
 
     override suspend fun deleteAllNotesFromServer() {
-
+        remoteRepository.clearAllNotes()
     }
 }

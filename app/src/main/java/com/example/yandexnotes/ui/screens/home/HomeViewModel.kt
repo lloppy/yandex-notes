@@ -27,6 +27,10 @@ class HomeViewModel(
         repository.deleteNote(uid = noteUid)
     }
 
+    suspend fun deleteNoteFromServer(noteUid: String) {
+        repository.deleteNoteFromBackend(uid = noteUid)
+    }
+
     suspend fun syncFromServer() {
         repository.fetchNotesFromBackend()
     }

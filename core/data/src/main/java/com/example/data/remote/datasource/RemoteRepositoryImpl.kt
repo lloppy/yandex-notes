@@ -31,7 +31,7 @@ class RemoteRepositoryImpl(
 
     override suspend fun getNotes(): Result<List<Note>, Network> {
         return try {
-            logger.debug("Fetching notes from backend, revision: $revision")
+            logger.debug("Fetching notes from backend")
             val response = api.getNotes()
             revision = response.revision
             logger.info("Successfully fetched ${response.list.size} notes, new revision: $revision")
@@ -59,11 +59,14 @@ class RemoteRepositoryImpl(
 
     override suspend fun addNote(note: Note, deviceId: String): Result<NoteUidModel, Network> {
         return try {
+            val currentRevision = api.getNotes().revision
             logger.debug("Adding new note: ${note.title} (${note.uid})")
+
             val response = api.addNote(
-                revision = revision,
+                revision = currentRevision,
                 request = SingleNoteRequest(note.toDto(deviceId))
             )
+
             revision = response.revision
             logger.info("Successfully added note ${response.element.id}, new revision: $revision")
             Result.Success(NoteUidModel(response.element.id))
@@ -76,17 +79,27 @@ class RemoteRepositoryImpl(
 
     override suspend fun updateNote(note: Note, deviceId: String): Result<NoteUidModel, Network> {
         return try {
+            val currentRevision = api.getNotes().revision
             logger.debug("Updating note: ${note.title} (${note.uid})")
-            val response = api.updateNote(
-                revision = revision,
-                noteUid = note.uid,
-                request = SingleNoteRequest(
-                    element = note.toDto(deviceId)
+
+            try {
+                val response = api.updateNote(
+                    revision = currentRevision,
+                    noteUid = note.uid,
+                    request = SingleNoteRequest(note.toDto(deviceId))
                 )
-            )
-            revision = response.revision
-            logger.info("Successfully updated note ${response.element.id}, new revision: $revision")
-            Result.Success(NoteUidModel(response.element.id))
+
+                revision = response.revision
+                logger.info("Successfully updated note ${response.element.id}, new revision: $revision")
+                Result.Success(NoteUidModel(response.element.id))
+            } catch (e: retrofit2.HttpException) {
+                if (e.code() == 404) {
+                    logger.warn("Note not found (404), trying to add as new")
+                    addNote(note, deviceId)
+                } else {
+                    throw e
+                }
+            }
         } catch (e: Exception) {
             val error = Network.fromException(e)
             logger.error("Failed to update note ${note.uid}: ${error.name}", e)
@@ -97,7 +110,8 @@ class RemoteRepositoryImpl(
     override suspend fun deleteNote(noteUid: String): EmptyResult<Network> {
         return try {
             logger.debug("Deleting note with UID: $noteUid")
-            val response = api.deleteNote(revision = revision, noteUid = noteUid)
+            val currentRevision = api.getNotes().revision
+            val response = api.deleteNote(revision = currentRevision, noteUid = noteUid)
             revision = response.revision
             logger.info("Successfully deleted note $noteUid, new revision: $revision")
             Result.Success(Unit)
@@ -114,8 +128,9 @@ class RemoteRepositoryImpl(
     ): Result<List<Note>, Network> {
         return try {
             logger.debug("Patching ${notes.size} notes")
+            val currentRevision = api.getNotes().revision
             val response = api.patchNotes(
-                revision = revision,
+                revision = currentRevision,
                 request = PatchNotesRequest(notes.map { it.toDto(deviceId) })
             )
             revision = response.revision
@@ -139,6 +154,22 @@ class RemoteRepositoryImpl(
             val error = Network.fromException(e)
             logger.error("Failed to fetch notes with threshold: ${error.name}", e)
             Result.Error(error)
+        }
+    }
+
+    override suspend fun clearAllNotes() {
+        try {
+            var currentRevision = api.getNotes().revision
+
+            api.getNotes().list.forEach { note ->
+                val response = api.deleteNote(
+                    revision = currentRevision,
+                    noteUid = note.id
+                )
+                currentRevision = response.revision
+            }
+        } catch (e: Exception) {
+            logger.error("Failed to clear notes", e)
         }
     }
 
@@ -169,9 +200,14 @@ class RemoteRepositoryImpl(
             is retrofit2.HttpException -> {
                 val error = when (e.code()) {
                     400 -> {
-                        logger.error("Bad Request (400) - likely invalid request data: ${e.response()?.errorBody()?.string()}")
+                        logger.error(
+                            "Bad Request (400) - likely invalid request data: ${
+                                e.response()?.errorBody()?.string()
+                            }"
+                        )
                         Network.BAD_REQUEST
                     }
+
                     401 -> UNAUTHORIZED
                     408 -> REQUEST_TIMEOUT
                     409 -> CONFLICT

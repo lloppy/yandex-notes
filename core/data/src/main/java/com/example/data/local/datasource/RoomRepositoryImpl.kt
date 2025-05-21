@@ -6,7 +6,7 @@ import com.example.data.local.mappers.toEntity
 import com.example.domain.LocalRepository
 import com.example.model.Note
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 class RoomRepositoryImpl(
@@ -46,9 +46,8 @@ class RoomRepositoryImpl(
         }
     }
 
-    override suspend fun getNoteByUid(uid: String): Note {
-        return dao.getByUid(uid).first()?.toDomain()
-            ?: throw NoSuchElementException("Note with uid $uid not found")
+    override suspend fun getNoteByUid(uid: String): Note? {
+        return dao.getByUid(uid).firstOrNull()?.toDomain()
     }
 
     override suspend fun deleteNote(uid: String) {

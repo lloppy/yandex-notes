@@ -36,4 +36,6 @@ interface RemoteRepository {
     suspend fun getNotesWithFailThreshold(
         generateFailsThreshold: Int?
     ): Result<List<Note>, DataError.Network>
+
+    suspend fun clearAllNotes()
 }
