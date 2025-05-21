@@ -6,7 +6,7 @@
     <dimen name="padding_large">24.dp</dimen>
 
     <dimen name="loading_circle">70.dp</dimen>
-    <dimen name="color_circle">24.dp</dimen>
+    <dimen name="color_circle">36.dp</dimen>
     <dimen name="emoji_size">32.sp</dimen>
 
     <dimen name="section_padding">8.dp</dimen>

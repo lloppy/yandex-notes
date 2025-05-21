@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SwipeableWrapper(
-    onSwipeEdit: () -> Unit,
+    onSwipeDelete: () -> Unit,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -31,7 +31,7 @@ fun SwipeableWrapper(
     LaunchedEffect(dismissState.currentValue) {
         when (dismissState.currentValue) {
             SwipeToDismissBoxValue.EndToStart -> {
-                onSwipeEdit()
+                onSwipeDelete()
                 dismissState.reset()
             }
 
@@ -56,7 +56,7 @@ fun SwipeableWrapper(
                     enter = fadeIn()
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
+                        imageVector = Icons.Default.Delete,
                         contentDescription = null
                     )
                 }

@@ -153,8 +153,8 @@ fun HabitContent(
         ) {
             items(items = notes, key = { it.uid }) { note ->
                 SwipeableWrapper(
-                    onSwipeEdit = {
-                        onSwipeEdit(note.uid)
+                    onSwipeDelete = {
+                        onSwipeDelete(note.uid)
                     },
                     content = {
                         NoteCard(

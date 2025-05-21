@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,7 +44,7 @@ fun NoteCard(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(dimensionResource(R.dimen.padding_medium)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
@@ -51,8 +52,10 @@ fun NoteCard(
             ColorDot(Color(note.color))
 
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
                     text = note.title,
@@ -73,8 +76,6 @@ fun NoteCard(
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
-
             IconButton(onClick = onClickDelete) {
                 Icon(
                     imageVector = Icons.Default.Delete,
@@ -89,7 +90,7 @@ fun NoteCard(
 private fun ColorDot(color: Color) {
     Box(
         modifier = Modifier
-            .size(24.dp)
+            .size(dimensionResource(R.dimen.color_circle))
             .clip(CircleShape)
             .background(color)
     )

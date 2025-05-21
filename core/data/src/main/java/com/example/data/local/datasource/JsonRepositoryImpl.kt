@@ -3,7 +3,7 @@ package com.example.data.local.datasource
 import android.content.Context
 import com.example.domain.LocalRepository
 import com.example.model.Note
-import com.example.model.mapper.json
+import com.example.model.json
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.json.JSONArray
