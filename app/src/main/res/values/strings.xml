@@ -23,5 +23,6 @@
     <string name="delete">Delete</string>
     <string name="sync">sync</string>
     <string name="create_and_sync">Создать и синхронизировать заметку</string>
+    <string name="save_and_sync">Сохранить и синхронизировать</string>
 
 </resources>

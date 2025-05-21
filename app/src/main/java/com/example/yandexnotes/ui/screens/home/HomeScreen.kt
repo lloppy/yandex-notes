@@ -164,7 +164,7 @@ fun HabitContent(
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .aspectRatio(4f)
+                                .aspectRatio(3f)
                                 .clickable(onClick = { onClickNote(note.uid) })
                         )
                     },

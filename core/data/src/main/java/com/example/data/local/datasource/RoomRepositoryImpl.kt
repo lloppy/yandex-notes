@@ -18,19 +18,37 @@ class RoomRepositoryImpl(
     }
 
     override suspend fun addNote(note: Note) {
-        dao.insert(note.toEntity())
-    }
+        val updatedRows = dao.updateByUid(
+            uid = note.uid,
+            title = note.title,
+            content = note.content,
+            color = note.color,
+            importance = note.importance,
+            selfDestructDate = note.selfDestructDate
+        )
 
-    override suspend fun getNoteByUid(uid: String): Note {
-        return dao.getByUid(uid = uid)
-            .map {
-                it.toDomain()
-            }
-            .first()
+        if (updatedRows == 0) {
+            dao.insert(note.toEntity())
+        }
     }
 
     override suspend fun updateNote(note: Note) {
-        dao.insert(note.toEntity()) // OnConflictStrategy.REPLACE
+        val updatedRows = dao.updateByUid(
+            uid = note.uid,
+            title = note.title,
+            content = note.content,
+            color = note.color,
+            importance = note.importance,
+            selfDestructDate = note.selfDestructDate
+        )
+        if (updatedRows == 0) {
+            dao.insert(note.toEntity())
+        }
+    }
+
+    override suspend fun getNoteByUid(uid: String): Note {
+        return dao.getByUid(uid).first()?.toDomain()
+            ?: throw NoSuchElementException("Note with uid $uid not found")
     }
 
     override suspend fun deleteNote(uid: String) {
